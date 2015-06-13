@@ -3,7 +3,7 @@
   register: database_list
  
 - name: influxdb - create project database
-  shell: curl -G http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/query --data-urlencode "q=CREATE DATABASE IF NOT EXIST {{ influxdb.dbname }}"
+  shell: curl -G http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/query --data-urlencode "q=CREATE DATABASE {{ influxdb.dbname }}"
   when: "'{{ influxdb.dbname }}' not in database_list.stdout"
 
 - name: influxdb - show users

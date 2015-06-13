@@ -1,1 +1,3 @@
 .vagrant
+app/Godeps/_workspace
+app/Godeps/Readme
