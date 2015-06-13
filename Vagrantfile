@@ -68,7 +68,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     cfg.vm.provision "cadvisor-run", type: "docker", run: "always" do |d|
       d.run "cadvisor",
         image: "google/cadvisor:0.15.1",
-        args: "",
+        args: $cadvisor_args,
         auto_assign_name: true,
         daemonize: true
     end
