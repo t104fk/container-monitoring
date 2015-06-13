@@ -1,0 +1,4 @@
+- hosts: monitor
+  sudo: True
+  roles:
+    - influxdb

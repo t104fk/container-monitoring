@@ -1,0 +1,7 @@
+influxdb:
+  version: 0.9.0
+  hostname: localhost
+  client_port: 8086
+  dbname: cadvisor
+  dbuser: influxer
+  dbpass: p4kU7ugpndm9V9Lw

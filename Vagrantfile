@@ -12,6 +12,10 @@ SHARED_DIR="/home/vagrant/share"
 
 $update_channel = "stable"
 
+$install_docker = <<SCRIPT
+type docker >&/dev/null || wget -qO- https://get.docker.com/ | sh
+SCRIPT
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = false
   config.vm.define "db" do |cfg|
@@ -34,6 +38,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     cfg.vm.box_url = "https://atlas.hashicorp.com/ubuntu/boxes/trusty64"
     cfg.vm.host_name = "monitor.vm"
     cfg.vm.network :private_network, ip: LOCAL_MONITOR_IP
+    cfg.vm.provision "shell", inline: $install_docker
+    cfg.vm.provision "ansible" do |ansible|
+      ansible.playbook = "ansible/monitor.yml"
+    end
   end
 end
 

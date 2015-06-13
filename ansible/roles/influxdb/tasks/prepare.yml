@@ -1,0 +1,19 @@
+- name: influxdb - show database
+  shell: curl -G http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/query --data-urlencode "q=SHOW DATABASES"
+  register: database_list
+ 
+- name: influxdb - create project database
+  shell: curl -G http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/query --data-urlencode "q=CREATE DATABASE IF NOT EXIST {{ influxdb.dbname }}"
+  when: "'{{ influxdb.dbname }}' not in database_list.stdout"
+
+- name: influxdb - show users
+  shell: curl -G http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/query --data-urlencode "q=SHOW USERS"
+  register: user_list
+
+- name: influxdb - create database user
+  shell: curl -G http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/query --data-urlencode "q=CREATE USER {{ influxdb.dbuser }} WITH PASSWORD '{{ influxdb.dbpass }}'"
+  when: "'{{ influxdb.dbuser }}' not in user_list.stdout"
+
+# TODO: check privileges before grant
+- name: influxdb - grent privileges
+  shell: curl -G http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/query --data-urlencode "q=GRANT ALL ON {{ influxdb.dbname }} TO {{ influxdb.dbuser }}"

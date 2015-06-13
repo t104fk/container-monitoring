@@ -1,0 +1,14 @@
+- name: fetch package
+  get_url: url=http://s3.amazonaws.com/influxdb/influxdb_{{ influxdb.version }}_amd64.deb dest=/usr/local/src/influxdb_{{ influxdb.version }}_amd64.deb
+
+- name: install package
+  command: dpkg --skip-same-version -i /usr/local/src/influxdb_{{ influxdb.version }}_amd64.deb
+
+- name: ensure influxdb is running
+  sudo: yes
+  service:
+    name: influxdb
+    state: running
+
+- name: influxdb - wait for service
+  wait_for: port={{ influxdb.client_port }} delay=5
