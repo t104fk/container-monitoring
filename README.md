@@ -4,6 +4,9 @@ Vagrantでアプリ用サーバーと監視用サーバーを作っている。
 cAdvisorのコンテナは監視用サーバーのinfluxdbにデータをぶちこんでいて、grafanaがそこからデータを引いてグラフ化している。  
 詳しくは以下のURLを。  
 
+### Dashboard sample
+import `dashboard_sample.json` at Grafana Web UI.  
+
 ### Special Thanks
 - [cAdvisor, InfluxDB, GrafanaでDockerコンテナのリソース監視](http://qiita.com/atskimura/items/4c4aaaaa554e2814e938)
 - [Exporting cAdvisor Stats to InfluxDB](https://github.com/google/cadvisor/blob/master/docs/influxdb.md)
