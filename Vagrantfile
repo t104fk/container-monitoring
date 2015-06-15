@@ -16,7 +16,6 @@ for c in ${RUNNINGS[@]}
 do
   if [ ! -z $c ]; then
     docker stop $c
-    docker rm $c
   fi
 done
 SCRIPT
