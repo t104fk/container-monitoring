@@ -24,9 +24,9 @@ SCRIPT
 $cadvisor_cmd = <<EOS.chomp
 -storage_driver=influxdb \
 -storage_driver_db=cadvisor \
--storage_driver_host=influxsrv:8086 \
+-storage_driver_host=172.17.8.103:8086 \
 -storage_driver_user=root \
--storage_driver_password=root \
+-storage_driver_password=BUWTgYXr1BeMFEbU \
 -storage_driver_secure=False
 EOS
 
@@ -35,25 +35,17 @@ $cadvisor_args = <<EOS.chomp
 -v /var/run:/var/run:rw \
 -v /sys:/sys:ro \
 -v /var/lib/docker/:/var/lib/docker:ro \
--p 8080:8080 \
---link influxsrv:influxsrv
-EOS
-
-$influxdb_args = <<EOS.chomp
--p 8083:8083 \
--p 8086:8086 \
---expose=8090 \
---expose=8099 \
--e PRE_CREATE_DB="cadvisor;grafana"
+-p 8080:8080 
 EOS
 
 $grafana_args = <<EOS.chomp
--p 80:80 \
+-p 3000:3000 \
 -e INFLUXDB_HOST=localhost \
 -e INFLUXDB_PORT=8086 \
 -e INFLUXDB_NAME=cadvisor \
--e INFLUXDB_USER=influxer \
--e INFLUXDB_PASS=p4kU7ugpndm9V9Lw
+-e INFLUXDB_USER=root \
+-e INFLUXDB_PASS=BUWTgYXr1BeMFEbU \
+-e INFLUXDB_IS_GRAFANADB=true
 EOS
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -72,7 +64,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     cfg.vm.host_name = "localapp.vm"
     cfg.vm.network :private_network, ip: LOCAL_APP_IP
     cfg.vm.synced_folder ".", "/home/core/share", id: "core", :nfs => true, :mount_options => ['nolock,vers=3,udp']
-    cfg.vm.provision "docker-build", type: "docker" do |d|
+    cfg.vm.provision "api-build", type: "docker" do |d|
       d.build_image "/home/core/share/app",
         args: "-t takasing/api:0.0.1"
     end
@@ -87,15 +79,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         daemonize: true
     end
 
-    cfg.vm.provision "influxsrv", type: "docker", run: "always" do |d|
-      d.run "influxsrv",
-        image: "tutum/influxdb:latest",
-        auto_assign_name: true,
-        args: $influxdb_args,
-        daemonize: true
-    end
-
-    cfg.vm.provision "cadvisor-run", type: "docker", run: "always" do |d|
+    cfg.vm.provision "cadvisor", type: "docker", run: "always" do |d|
       d.run "cadvisor",
         image: "google/cadvisor:0.15.1",
         cmd: $cadvisor_cmd,

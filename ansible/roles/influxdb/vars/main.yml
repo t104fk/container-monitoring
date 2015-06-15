@@ -1,7 +1,12 @@
 influxdb:
-  version: 0.9.0
+  #version: 0.9.0
+  version: 0.8.8
   hostname: localhost
   client_port: 8086
-  dbname: cadvisor
-  dbuser: influxer
-  dbpass: p4kU7ugpndm9V9Lw
+  root_pass: BUWTgYXr1BeMFEbU
+  cadvisor_db: cadvisor
+  cadvisor_user: cadvisor
+  cadvisor_pass: p4kU7ugpndm9V9Lw
+  grafana_db: grafana
+  grafana_user: grafana
+  grafana_pass: 9bveECpL4LfUHOLi

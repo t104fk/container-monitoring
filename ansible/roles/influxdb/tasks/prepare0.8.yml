@@ -1,0 +1,18 @@
+- name: influxdb - change root pw
+  shell: "curl -X POST 'http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/cluster_admins/root?u=root&p=root' -d '{\"password\": \"{{ influxdb.root_pass }}\"}'"
+
+- name: influxdb - create project database
+  shell: "curl -X POST 'http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/db?u=root&p={{ influxdb.root_pass }}' -d '{\"name\": \"{{ influxdb.cadvisor_db }}\"}'"
+
+- name: influxdb - create grafana database
+  shell: "curl -X POST 'http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/db?u=root&p={{ influxdb.root_pass }}' -d '{\"name\": \"{{ influxdb.grafana_db }}\"}'"
+
+- name: influxdb - create database user
+  shell: "curl -X POST 'http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/db/{{ influxdb.cadvisor_db }}/users?u=root&p={{ influxdb.root_pass }}' -d '{\"name\": \"{{ influxdb.cadvisor_user }}\", \"password\": \"{{ influxdb.cadvisor_pass }}\"}'"
+
+- name: add privilege
+  shell: "curl -X POST 'http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/db/{{ influxdb.cadvisor_db }}/users/{{ influxdb.cadvisor_user }}?u=root&p={{ influxdb.root_pass }}' -d '{\"admin\": \"true\"}'"
+ 
+- name: influxdb - create grafana user
+  shell: "curl -X POST 'http://{{ influxdb.hostname }}:{{ influxdb.client_port }}/db/{{ influxdb.grafana_db }}/users?u=root&p={{ influxdb.root_pass }}' -d '{\"name\": \"{{ influxdb.grafana_user }}\", \"password\": \"{{ influxdb.grafana_pass }}\"}'"
+
