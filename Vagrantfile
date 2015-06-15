@@ -4,9 +4,9 @@
 Vagrant.require_version ">= 1.6.0"
 VAGRANTFILE_API_VERSION = "2"
 
-LOCAL_DB_IP="172.17.8.101"
-LOCAL_APP_IP="172.17.8.102"
-LOCAL_MONITOR_IP="172.17.8.103"
+LOCAL_DB_IP="172.17.9.101"
+LOCAL_APP_IP="172.17.9.102"
+LOCAL_MONITOR_IP="172.17.9.103"
 
 $update_channel = "stable"
 
@@ -23,7 +23,7 @@ SCRIPT
 $cadvisor_cmd = <<EOS.chomp
 -storage_driver=influxdb \
 -storage_driver_db=cadvisor \
--storage_driver_host=172.17.8.103:8086 \
+-storage_driver_host=#{LOCAL_MONITOR_IP}:8086 \
 -storage_driver_user=cadvisor \
 -storage_driver_password=p4kU7ugpndm9V9Lw \
 -storage_driver_secure=False
@@ -53,7 +53,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     cfg.vm.box = "ubuntu/trusty64"
     cfg.vm.box_url = "https://atlas.hashicorp.com/ubuntu/boxes/trusty64"
     cfg.vm.host_name = "database.vm"
-    cfg.vm.network :forwarded_port, guest:5432, host:5432
     cfg.vm.network :private_network, ip: LOCAL_DB_IP
     cfg.vm.synced_folder ".", "/home/vagrant/share", id: "core", :nfs => true, :mount_options => ['nolock,vers=3,udp']
   end
