@@ -25,8 +25,8 @@ $cadvisor_cmd = <<EOS.chomp
 -storage_driver=influxdb \
 -storage_driver_db=cadvisor \
 -storage_driver_host=172.17.8.103:8086 \
--storage_driver_user=root \
--storage_driver_password=BUWTgYXr1BeMFEbU \
+-storage_driver_user=cadvisor \
+-storage_driver_password=p4kU7ugpndm9V9Lw \
 -storage_driver_secure=False
 EOS
 
@@ -43,8 +43,8 @@ $grafana_args = <<EOS.chomp
 -e INFLUXDB_HOST=localhost \
 -e INFLUXDB_PORT=8086 \
 -e INFLUXDB_NAME=cadvisor \
--e INFLUXDB_USER=root \
--e INFLUXDB_PASS=BUWTgYXr1BeMFEbU \
+-e INFLUXDB_USER=cadvisor \
+-e INFLUXDB_PASS=p4kU7ugpndm9V9Lw \
 -e INFLUXDB_IS_GRAFANADB=true
 EOS
 
