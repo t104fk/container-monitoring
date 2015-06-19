@@ -10,8 +10,6 @@ LOCAL_MONITOR_IP="172.17.9.103"
 
 SHARED_DIR="/home/vagrant/container-monitoring"
 
-$update_channel = "stable"
-
 $stop_container = <<SCRIPT
 RUNNINGS=`docker ps -q --filter='status=running'`
 for c in ${RUNNINGS[@]}
